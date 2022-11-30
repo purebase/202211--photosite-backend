@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: photo
+netty:
+  default:
+    allocator:
+      max-order: 3
