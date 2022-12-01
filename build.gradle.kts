@@ -1,18 +1,23 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.6.21"
-    id("org.jetbrains.kotlin.kapt") version "1.6.21"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.6.21"
+    kotlin("jvm") version "1.7.20"
+    kotlin("kapt") version "1.7.20"
+    kotlin("plugin.allopen") version "1.7.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.6.3"
+    application
 }
 
-version = "0.1"
-group = "de.purebase"
+group = "org.example"
+version = "1.0-SNAPSHOT"
 
-val kotlinVersion=project.properties.get("kotlinVersion")
+
 repositories {
     mavenCentral()
 }
+
+val kotlinVersion=project.properties.get("kotlinVersion")
 
 dependencies {
     kapt("io.micronaut:micronaut-http-validation")
@@ -27,14 +32,18 @@ dependencies {
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    testImplementation(kotlin("test"))
 }
-
 
 application {
     mainClass.set("de.purebase.ApplicationKt")
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks {
@@ -49,6 +58,7 @@ tasks {
         }
     }
 }
+
 graalvmNative.toolchainDetection.set(false)
 micronaut {
     runtime("netty")
@@ -58,6 +68,4 @@ micronaut {
         annotations("de.purebase.*")
     }
 }
-
-
 
